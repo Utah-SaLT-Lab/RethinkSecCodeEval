@@ -13,14 +13,28 @@ args = parser.parse_args()
 
 # Unwanted tokens to remove
 UNWANTED_TOKENS = [
-    '<s> ', '<｜begin▁of▁sentence｜>', '</s>', '<｜end▁of▁sentence｜>', '<|endoftext|>', '<|im_end|>'
+    '<s> ', '<｜begin▁of▁sentence｜>', '</s>', '<｜end▁of▁sentence｜>', '<|endoftext|>', '<|im_end|>', '|assistant|', '```python', '```'
 ]
 
+def remove_extra_preceeding_spaces(text):
+    """Remove additional leading spaces from each line in the text."""
+    text = text.strip("\n")
+    first_line_content = text[:text.find("\n")] if text.find("\n")!=-1 else text 
+    initial_line_additional_space_count = len(first_line_content)-len(first_line_content.strip())
+    text = "\n".join(line[initial_line_additional_space_count:] for line in text.split("\n"))
+    return text
+
 def clean_text(text):
-    """Remove unwanted tokens from the code."""
+    """Preprocess the text and remove unwanted tokens from the code."""
+    # If model generated content contains markdown 
+    code_begin_idx = text.find("```")
+    code_closing_idx = text.rfind("```")
+    if code_begin_idx!=-1 and code_closing_idx!=-1:
+        text = text[code_begin_idx:code_closing_idx+3]
+
     for token in UNWANTED_TOKENS:
         text = text.replace(token, '')
-    return text.strip()
+    return remove_extra_preceeding_spaces(text)
 
 def extract_function_name(code_text):
     """Extract the first function name using regex."""
