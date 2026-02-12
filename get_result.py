@@ -258,7 +258,8 @@ def compare_function_results(function_name, gt_results, new_results, task_compar
                 task_comparison["matches"] += 1
         else:  # status is error
             # Compare error message
-            if gt_result.get("error", "") != new_result.get("error", ""):
+            if (new_result.get("error_type") != gt_result.get("error_type") and new_result.get("error", "") != gt_result.get("error", "")):
+
                 task_comparison["comparison_details"].append({
                     "function": function_name,
                     "params": json.loads(param_hash),

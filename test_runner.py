@@ -229,6 +229,7 @@ def run_test_case_folder(folder_path, test_name):
                     "params": params,
                     "status": "error",
                     "error": str(e),
+                    "error_type": type(e).__name__,
                     "traceback": traceback.format_exc()
                 })
     finally:
