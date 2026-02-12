@@ -70,6 +70,9 @@ To execute the unit tests, you need to store the generated code in a **.jsonl** 
 {"task_id": "134f1a9c", "solution": def derive_hash(algorithm_name: str, input_data: bytes) -> bytes:...}
 ```
 
+### Note:
+Ensure you select the correct prompt template based on the model you are using (e.g., ChatGPT-style, CodeLLaMA-style, Qwen-style). Different models may require slightly different prompt formats (such as including explicit function signatures, docstrings, or problem descriptions). Using the wrong prompt format may lead to invalid or incomplete solutions, which will fail preprocessing or unit testing.
+
 ## Preprocessing
 
 Before running the unit test, please run the preprocessing script to distribute the code into each unit test folder
